@@ -21,6 +21,13 @@
 		</style>
 		<script type="text/javascript"
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDI349N2u4SHMFJNUnM_QJ7horaD3zZadg&libraries=places&sensor=false"></script>
+		<script type="text/javascript" src="namespace.js"></script>
+		<script type="text/javascript" src="dot.js"></script>
+		<script type="text/javascript" src="mover.js"></script>
+		<script type="text/javascript" src="transformedimage.js"></script>
+		<script type="text/javascript" src="opacitycontrol.js"></script>
+		<script type="text/javascript" src="affineoverlay.js"></script>
+		<script type="text/javascript" src="editor.js"></script>
 
 		<style>
 			input {
@@ -101,6 +108,10 @@
 				});
 
 				getLocation();
+				
+				var img = new Image();
+  				img.src = "test.png";
+  				img.onload = setupOverlay.bind(this, img, map);
 
 			}
 
