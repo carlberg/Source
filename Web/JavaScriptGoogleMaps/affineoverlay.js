@@ -212,7 +212,7 @@ overlaytiler.AffineOverlay.prototype.getTopLeftPoint_ = function() {
 
 /**
  * Gets all LatLngs for each control dot.
- * @return {Array.<google.maps.LatLng>} LatLngs of control dots.
+ * @return {Array.google.maps.LatLng} LatLngs of control dots.
  */
 overlaytiler.AffineOverlay.prototype.getDotLatLngs = function() {
   var proj = this.getProjection();
@@ -222,4 +222,20 @@ overlaytiler.AffineOverlay.prototype.getDotLatLngs = function() {
     result.push(proj.fromDivPixelToLatLng(new google.maps.Point(dot.x, dot.y)));
   }
   return result;
+};
+
+/**
+ * Calculates where the fourth anchor should be.
+ * @private
+ * @return {google.maps.LatLng} the coordinates of the fourth point.
+ */
+overlaytiler.AffineOverlay.prototype.getVirtualDotLngLat = function() {
+  var proj = this.getProjection();
+ 
+  var dots = this.dots_;
+  var point = new google.maps.Point(
+      dots[0].x + dots[2].x - dots[1].x,
+      dots[0].y + dots[2].y - dots[1].y);
+  
+  return proj.fromDivPixelToLatLng(point);
 };

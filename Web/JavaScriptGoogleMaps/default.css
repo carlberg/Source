@@ -7,7 +7,7 @@ html, body {
 }
 
 #map-canvas, #map_canvas {
-	height: 100%;
+	height: 95%;
 }
 
 @media print {
@@ -31,8 +31,19 @@ html, body {
 	border: 1px solid #999;
 }
 
+#links {
+	position: absolute;
+	top: 5px;
+	left: 90%;
+	margin-left: -180px;
+	z-index: 5;
+	background-color: #fff;
+	padding: 5px;
+	border: 1px solid #999;
+}
+
 #map {
-	height: 100%;
+	height: 95%;
 	margin: 0;
 	font-family: sans-serif;
 }
@@ -67,6 +78,10 @@ html, body {
 	/*top: 50%;*/
 	margin-top: -15px;
 	font-size: 3em;
+}
+
+a {
+	background-color:#B2FF99;
 }
 
 #upload-map {
