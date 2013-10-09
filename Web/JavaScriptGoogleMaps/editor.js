@@ -102,35 +102,39 @@ function basename(file) {
 function getTabData() {
 
 	var overlay = this.overlay;
-	var img = this.overlay.img_;
+	if (overlay != null) {
+		var img = this.overlay.img_;
 
-	var dots = overlay.getDotLatLngs();
+		var dots = overlay.getDotLatLngs();
 
-	var fourth = overlay.getVirtualDotLngLat();
+		var fourth = overlay.getVirtualDotLngLat();
 
-	var cmd = [];
-	cmd.push('(' + getSign(dots[0].lng()) + dots[0].lng() + ','
-			+ getSign(dots[0].lat()) + dots[0].lat()
-			+ ')(0,0) Label \"Top Left\"\r\n');
-	cmd.push('(' + getSign(dots[1].lng()) + dots[1].lng() + ','
-			+ getSign(dots[1].lat()) + dots[1].lat() + ')(' + img.width
-			+ ',0) Label \"Top Right\"\r\n');
-	cmd.push('(' + getSign(fourth.lng()) + fourth.lng() + ','
-			+ getSign(fourth.lat()) + fourth.lat() + ')(0,' + img.height
-			+ ') Label \"Bottom Left\"\r\n');
-	cmd.push('(' + getSign(dots[2].lng()) + dots[2].lng() + ','
-			+ getSign(dots[2].lat()) + dots[2].lat() + ')(' + img.width + ','
-			+ img.height + ') Label \"Bottom Right\"\r\n');
+		var cmd = [];
+		cmd.push('(' + getSign(dots[0].lng()) + dots[0].lng() + ','
+				+ getSign(dots[0].lat()) + dots[0].lat()
+				+ ')(0,0) Label \"Top Left\"\r\n');
+		cmd.push('(' + getSign(dots[1].lng()) + dots[1].lng() + ','
+				+ getSign(dots[1].lat()) + dots[1].lat() + ')(' + img.width
+				+ ',0) Label \"Top Right\"\r\n');
+		cmd.push('(' + getSign(fourth.lng()) + fourth.lng() + ','
+				+ getSign(fourth.lat()) + fourth.lat() + ')(0,' + img.height
+				+ ') Label \"Bottom Left\"\r\n');
+		cmd.push('(' + getSign(dots[2].lng()) + dots[2].lng() + ','
+				+ getSign(dots[2].lat()) + dots[2].lat() + ')(' + img.width
+				+ ',' + img.height + ') Label \"Bottom Right\"\r\n');
 
-	var string = cmd.join('');
+		var string = cmd.join('');
 
-	var tabHeader = "!table\r\n!version300\r\n!charset WindowsLatin1\r\n\r\n";
-	tabHeader += 'Definition Table\r\nFile \"' + basename(img.src) + '\"\r\n';
-	tabHeader += 'Type \"RASTER\"\r\n';
-	var tabLocation = string;
-	var tabCoordSys = 'CoordSys Earth Projection 1, 104\r\nUnits "degree"';
-	var tab = tabHeader + tabLocation + tabCoordSys;
-	return tab;
+		var tabHeader = "!table\r\n!version300\r\n!charset WindowsLatin1\r\n\r\n";
+		tabHeader += 'Definition Table\r\nFile \"' + basename(img.src)
+				+ '\"\r\n';
+		tabHeader += 'Type \"RASTER\"\r\n';
+		var tabLocation = string;
+		var tabCoordSys = 'CoordSys Earth Projection 1, 104\r\nUnits "degree"';
+		var tab = tabHeader + tabLocation + tabCoordSys;
+		return tab;
+	}
+	return '';
 }
 
 /*******************************************************************************
