@@ -98,9 +98,9 @@ overlaytiler.AffineOverlay.prototype.onAdd = function() {
 	this.getPanes().overlayLayer.appendChild(this.canvas_);
 
 	var img = this.img_;
-	var dots = this.dots_ = [ new overlaytiler.Dot(pane, x, y, "A"),
-			new overlaytiler.Dot(pane, x + img.width, y, "B"),
-			new overlaytiler.Dot(pane, x + img.width, y + img.height, "C") ];
+	var dots = this.dots_ = [ new overlaytiler.Dot(pane, x, y, "A", this.getProjection()),
+			new overlaytiler.Dot(pane, x + img.width, y, "B", this.getProjection()),
+			new overlaytiler.Dot(pane, x + img.width, y + img.height, "C", this.getProjection()) ];
 
 	for (var i = 0, dot; dot = dots[i]; ++i) {
 		google.maps.event.addListener(dot, 'dragstart', this.setMapDraggable_
@@ -111,6 +111,9 @@ overlaytiler.AffineOverlay.prototype.onAdd = function() {
 
 		google.maps.event.addListener(dot, 'change', this.renderCanvas_
 				.bind(this));
+		
+		google.maps.event.addListener(this.getMap(), 'zoom_changed', dot.onZoomChanged_
+				.bind(dot));
 	}
 
 	this.ti_ = new overlaytiler.TransformedImage(img, dots[0], dots[1], dots[2]);
@@ -125,7 +128,7 @@ overlaytiler.AffineOverlay.prototype.onAdd = function() {
 			this, true));
 
 	this.previousTopLeft_ = this.getTopLeftPoint_();
-	google.maps.event.addListener(map, 'zoom_changed', this.onZoomChanged_
+	google.maps.event.addListener(this.getMap(), 'zoom_changed', this.onZoomChanged_
 			.bind(this));
 
 	this.renderCanvas_();
@@ -134,10 +137,7 @@ overlaytiler.AffineOverlay.prototype.onAdd = function() {
 overlaytiler.AffineOverlay.prototype.previousTopLeft_;
 
 overlaytiler.AffineOverlay.prototype.onZoomChanged_ = function() {
-	var currentTopLeftPoint = this.getTopLeftPoint_();
-	if (this.previousTopLeft_.equals(currentTopLeftPoint)) {
-		//Dots have not changed position, so seems we really zoomed
-	}
+	
 };
 
 /**

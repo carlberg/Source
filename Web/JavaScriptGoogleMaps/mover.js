@@ -31,7 +31,7 @@
  */
 overlaytiler.Mover = function(parent, dots) {
   // hide the dot until its position is calculated.
-  var dot = new overlaytiler.Dot(parent, -1e5, -1e5, "");
+  var dot = new overlaytiler.Dot(parent, -1e5, -1e5, "", null);
   dot.controlDots_ = dots;
   dot.getCanvas().className += ' mover';
   dot.onMouseMove_ = this.onMouseMove_.bind(dot);

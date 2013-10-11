@@ -59,7 +59,7 @@ function setupOverlay(img, map) {
 
 	var overlay = new overlaytiler.AffineOverlay(img);
 	overlay.setMap(map);
-	this.overlay = overlay;
+	//this.overlay = overlay;
 
 	var opacity = new overlaytiler.OpacityControl(overlay);
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(opacity
@@ -73,7 +73,7 @@ function setupOverlay(img, map) {
 	 * Displays image x/y vs map lat/long
 	 */
 	google.maps.event.addListener(overlay, 'change', function() {
-		gdalCommand.innerText = getTabData();
+		gdalCommand.innerText = getTabData(overlay);
 	});
 }
 
@@ -99,11 +99,11 @@ function basename(file) {
  * @param img
  * @returns {String}
  */
-function getTabData() {
+function getTabData(overlay) {
 
-	var overlay = this.overlay;
+	//var overlay = this.overlay;
 	if (overlay != null) {
-		var img = this.overlay.img_;
+		var img = overlay.img_;
 
 		var dots = overlay.getDotLatLngs();
 
