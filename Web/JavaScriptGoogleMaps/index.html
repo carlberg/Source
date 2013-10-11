@@ -40,7 +40,7 @@
 
 		<script type="text/javascript">
 			var map;
-			
+
 			function getLocation() {
 				if (navigator.geolocation) {
 					navigator.geolocation.getCurrentPosition(showLocation);
@@ -143,18 +143,30 @@
 			}
 
 			function handleFiles(files) {
-				var file = files[0];
+				var f = files[0];
 				//document.getElementById("droplabel").innerHTML = "Processing " + file.name;
 				var reader = new FileReader();
+
 				// init the reader event handlers
-				reader.onload = handleReaderLoad;
+				//reader.onload = handleReaderLoad;
+				var theObj = this;
+				reader.onload = (function(theFile, theObj) {
+					
+					return function(e) {
+						var img = new Image();
+						img.src = e.target.result;
+						img.name = theFile.name;
+						img.onload = setupOverlay.bind(theObj, img, map);
+					};
+				})(f);
 				// begin the read operation
-				reader.readAsDataURL(file);
+				reader.readAsDataURL(f);
 			}
 
 			function handleReaderLoad(evt) {
 				var img = new Image();
 				img.src = evt.target.result;
+				img.name = evt.target.name;
 				img.onload = setupOverlay.bind(this, img, map);
 			}
 

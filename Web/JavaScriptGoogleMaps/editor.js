@@ -126,7 +126,7 @@ function getTabData(overlay) {
 		var string = cmd.join('');
 
 		var tabHeader = "!table\r\n!version300\r\n!charset WindowsLatin1\r\n\r\n";
-		tabHeader += 'Definition Table\r\nFile \"' + basename(img.src)
+		tabHeader += 'Definition Table\r\nFile \"' + getFileName(img)
 				+ '\"\r\n';
 		tabHeader += 'Type \"RASTER\"\r\n';
 		var tabLocation = string;
@@ -150,6 +150,6 @@ function getSign(number) {
 	return "-";
 }
 
-function getFileName() {
-	return basename(this.overlay.img_.src).split(".")[0] + ".tab";
+function getFileName(img) {
+	return basename(img.name).split(".")[0] + ".tab";
 }
