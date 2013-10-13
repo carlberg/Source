@@ -61,6 +61,13 @@ overlaytiler.Dot = function(parent, x, y, text_label, projection) {
 
 	canvas.addEventListener('mousedown', this.onMouseDown_, true);
 	window.addEventListener('mouseup', this.onMouseUp_, true);
+	
+	this.onTouchMove_ = this.onTouchMove_.bind(this);
+	this.onTouchStart_ = this.onTouchStart_.bind(this);
+	this.onTouchEnd_ = this.onTouchEnd_.bind(this);
+
+	canvas.addEventListener('tocuhstart', this.onTouchStart_, true);
+	window.addEventListener('touchend', this.onTouchEnd_, true);
 
 	this.style = canvas.style;
 	this.render();
@@ -140,6 +147,38 @@ overlaytiler.Dot.prototype.onMouseDown_ = function(e) {
 overlaytiler.Dot.prototype.onMouseUp_ = function() {
 	if (this.mouseMoveListener_) {
 		google.maps.event.removeListener(this.mouseMoveListener_);
+	}
+	google.maps.event.trigger(this, 'dragend');
+};
+
+//Touch events
+
+
+overlaytiler.Dot.prototype.onTouchStart_ = function(e){
+	var touch = e.targetTouches[0];
+	
+	this.cx = touch.pageX;
+	this.cy = touch.pageY;
+	this.touchMoveListener_ = google.maps.event.addDomListener(window,
+			'touchmove', this.onTouchMove_.bind(this));
+	google.maps.event.trigger(this, 'dragstart');
+};
+
+overlaytiler.Dot.prototype.onTouchMove_ = function(e) {
+	var touch = e.targetTouches[0];
+	
+	this.x += touch.pageX - this.cx;
+	this.y += touch.pageY - this.cy;
+
+	this.render();
+
+	this.cx = touch.pageX;
+	this.cy = touch.pageX;
+};
+
+overlaytiler.Dot.prototype.onTouchEnd_ = function() {
+	if (this.touchMoveListener_) {
+		google.maps.event.removeListener(this.touchMoveListener_);
 	}
 	google.maps.event.trigger(this, 'dragend');
 };
