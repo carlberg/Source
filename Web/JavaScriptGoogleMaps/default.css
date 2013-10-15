@@ -69,8 +69,25 @@ html, body {
 	border: 3px #0f0 outset;
 	cursor: move;
 }
+
 .dot:active {
 	border-color: blue;
+}
+
+.overlay {
+	cursor:default;
+	border-color: red;
+	border: 5px solid;	
+}
+
+.overlay:enabled {
+	border-color: blue;
+	border: 5px solid;	
+}
+
+.overlay:disabled {
+	border-color: green;
+	border: 5px solid;
 }
 
 .label {

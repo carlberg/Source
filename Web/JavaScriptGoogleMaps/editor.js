@@ -59,7 +59,6 @@ function setupOverlay(img, map) {
 
 	var overlay = new overlaytiler.AffineOverlay(img);
 	overlay.setMap(map);
-	//this.overlay = overlay;
 
 	var opacity = new overlaytiler.OpacityControl(overlay);
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(opacity

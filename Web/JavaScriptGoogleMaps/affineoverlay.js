@@ -33,12 +33,27 @@ overlaytiler.AffineOverlay = function(img) {
 	// TODO(cbro): calculate the width/height on the fly in case it's larger
 	// than
 	// 2000px. This should be good enough for now.
-	canvas.width = 2000;
-	canvas.height = 2000;
-	canvas.style.position = 'absolute';
-	this.ctx = canvas.getContext('2d');
+	if (document.body.clientWidth < img.width || document.body.clientHeight < img.height) {
+		var docWidth = document.body.clientWidth;
+		var docHeight = document.body.clientHeight;
+		//var width = img.width;
+		
+		var percent = Math.min((docWidth * 0.75) / img.width, (docHeight * 0.75) / img.height);
+		
+		
+		img.width = img.width * percent;
+		img.height = img.height * percent;
+	}
 
+	canvas.width = img.width;
+	canvas.height = img.height;
+	canvas.style.position = 'absolute';
+	// canvas.className = 'overlaycanvas';
+	// canvas.style.border = '5px red solid';
+	this.ctx = canvas.getContext('2d');
 	this.img_ = img;
+	this.isSelected = true;
+
 };
 
 overlaytiler.AffineOverlay.prototype = new google.maps.OverlayView;
@@ -98,9 +113,12 @@ overlaytiler.AffineOverlay.prototype.onAdd = function() {
 	this.getPanes().overlayLayer.appendChild(this.canvas_);
 
 	var img = this.img_;
-	var dots = this.dots_ = [ new overlaytiler.Dot(pane, x, y, "A", this.getProjection()),
-			new overlaytiler.Dot(pane, x + img.width, y, "B", this.getProjection()),
-			new overlaytiler.Dot(pane, x + img.width, y + img.height, "C", this.getProjection()) ];
+	var dots = this.dots_ = [
+			new overlaytiler.Dot(pane, x, y, "A", this.getProjection()),
+			new overlaytiler.Dot(pane, x + img.width, y, "B", this
+					.getProjection()),
+			new overlaytiler.Dot(pane, x + img.width, y + img.height, "C", this
+					.getProjection()) ];
 
 	for (var i = 0, dot; dot = dots[i]; ++i) {
 		google.maps.event.addListener(dot, 'dragstart', this.setMapDraggable_
@@ -111,9 +129,9 @@ overlaytiler.AffineOverlay.prototype.onAdd = function() {
 
 		google.maps.event.addListener(dot, 'change', this.renderCanvas_
 				.bind(this));
-		
-		google.maps.event.addListener(this.getMap(), 'zoom_changed', dot.onZoomChanged_
-				.bind(dot));
+
+		google.maps.event.addListener(this.getMap(), 'zoom_changed',
+				dot.onZoomChanged_.bind(dot));
 	}
 
 	this.ti_ = new overlaytiler.TransformedImage(img, dots[0], dots[1], dots[2]);
@@ -128,16 +146,17 @@ overlaytiler.AffineOverlay.prototype.onAdd = function() {
 			this, true));
 
 	this.previousTopLeft_ = this.getTopLeftPoint_();
-	google.maps.event.addListener(this.getMap(), 'zoom_changed', this.onZoomChanged_
-			.bind(this));
+	google.maps.event.addListener(this.getMap(), 'zoom_changed',
+			this.onZoomChanged_.bind(this));
 
 	this.renderCanvas_();
 };
 
 overlaytiler.AffineOverlay.prototype.previousTopLeft_;
+overlaytiler.AffineOverlay.prototype.isSelected = false;
 
 overlaytiler.AffineOverlay.prototype.onZoomChanged_ = function() {
-	
+
 };
 
 /**

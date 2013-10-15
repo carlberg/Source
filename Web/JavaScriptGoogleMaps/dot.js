@@ -48,9 +48,7 @@ overlaytiler.Dot = function(parent, x, y, text_label, projection) {
 	var label = document.createElement('div');
 	label.className = 'label';
 	label.appendChild(document.createTextNode(text_label));
-	// var label = document.createTextNode(text_label);
 	canvas.appendChild(label);
-
 	// end edit
 
 	parent.appendChild(canvas);
